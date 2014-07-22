@@ -23,10 +23,12 @@ import org.junit.Test;
 
 import java.util.Map;
 
+import static com.androweed.lol.client.interfaces.Region.EUW;
+
 public class RestLolClientTest {
 
     @Test
     public void testGetSummonerByName() throws Exception {
-        Map<String, SummonerDTO> result = new RestLolClient().retrieveSummonerByName("euw", "aurelman");
+        Map<String, SummonerDTO> result = new RestLolClient().retrieveSummonersByName(EUW, "aurelman");
     }
 }
