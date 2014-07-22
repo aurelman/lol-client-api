@@ -21,6 +21,7 @@ package com.androweed.lol.client.implementations;
 import com.androweed.lol.client.dtos.SummonerDTO;
 import com.androweed.lol.client.exceptions.RateLimitExceededException;
 import com.androweed.lol.client.interfaces.LolClient;
+import com.androweed.lol.client.interfaces.Region;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 
@@ -41,15 +42,13 @@ public class RestLolClient implements LolClient {
 
     public static final String PARAM_NAME_API_KEY = "api_key";
 
-    public static final String EUROPE_TARGET_BASE_URL = "https://euw.api.pvp.net";
-
     public static final String API_KEY = "";
 
     @Override
-    public Map<String, SummonerDTO> getSummonerByName(final String region, final String... summonerNames)
+    public Map<String, SummonerDTO> retrieveSummonerByName(final String region, final String... summonerNames)
             throws RateLimitExceededException, IOException {
         Client client = ClientBuilder.newClient();
-        Invocation.Builder target = client.target(EUROPE_TARGET_BASE_URL)
+        Invocation.Builder target = client.target(Region.EUW.getEndpoint())
                 .path("api")
                 .path("lol")
                 .path("euw")

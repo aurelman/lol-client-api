@@ -16,19 +16,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.androweed.lol.client.interfaces;
-
-import com.androweed.lol.client.dtos.SummonerDTO;
-import com.androweed.lol.client.exceptions.RateLimitExceededException;
-
-import java.io.IOException;
-import java.util.Map;
+package com.androweed.lol.client.implementations;
 
 /**
- * This is the base class for the lol client.
  * @author aurelman
  */
-public interface LolClient {
+public class CachedLolClient {
 
-    Map<String, SummonerDTO> retrieveSummonerByName(final String region, final String... summonerNames) throws RateLimitExceededException, IOException;
 }

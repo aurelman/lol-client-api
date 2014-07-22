@@ -27,6 +27,6 @@ public class RestLolClientTest {
 
     @Test
     public void testGetSummonerByName() throws Exception {
-        Map<String, SummonerDTO> result = new RestLolClient().getSummonerByName("euw", "aurelman");
+        Map<String, SummonerDTO> result = new RestLolClient().retrieveSummonerByName("euw", "aurelman");
     }
 }

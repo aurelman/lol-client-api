@@ -18,17 +18,40 @@
 
 package com.androweed.lol.client.interfaces;
 
-import com.androweed.lol.client.dtos.SummonerDTO;
-import com.androweed.lol.client.exceptions.RateLimitExceededException;
-
-import java.io.IOException;
-import java.util.Map;
-
 /**
- * This is the base class for the lol client.
+ * The {@link com.androweed.lol.client.interfaces.Region} is used to describe the different type of regions
+ * available as a target of the lol API.
+ *
  * @author aurelman
  */
-public interface LolClient {
+public enum Region {
 
-    Map<String, SummonerDTO> retrieveSummonerByName(final String region, final String... summonerNames) throws RateLimitExceededException, IOException;
+    EUW("euw", "https://euw.api.pvp.net");
+
+    private final String name;
+
+    private final String endpoint;
+
+    private Region(final String name, final String endpoint) {
+        this.name = name;
+        this.endpoint = endpoint;
+    }
+
+    /**
+     * The identifier of the region.
+     *
+     * @return The identifier of the region.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * The target corresponding to the region.
+     *
+     * @return The target corresponding to the region
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
 }

@@ -18,17 +18,15 @@
 
 package com.androweed.lol.client.interfaces;
 
-import com.androweed.lol.client.dtos.SummonerDTO;
-import com.androweed.lol.client.exceptions.RateLimitExceededException;
+import org.junit.Test;
 
-import java.io.IOException;
-import java.util.Map;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-/**
- * This is the base class for the lol client.
- * @author aurelman
- */
-public interface LolClient {
+public class RegionTest {
 
-    Map<String, SummonerDTO> retrieveSummonerByName(final String region, final String... summonerNames) throws RateLimitExceededException, IOException;
+    @Test
+    public void shouldReturnCorrectEuwAttribute() throws Exception {
+        assertThat(Region.EUW.getName()).isEqualTo("euw");
+        assertThat(Region.EUW.getEndpoint()).isEqualTo("https://euw.api.pvp.net");
+    }
 }
