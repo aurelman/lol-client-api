@@ -21,6 +21,8 @@ package com.androweed.lol.client.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
+ * The LoL summoner representation.
+ *
  * @author aurelman
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
