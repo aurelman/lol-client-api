@@ -16,19 +16,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.androweed.lol.client.implementations;
+package com.androweed.lol.client.interfaces;
 
-import com.androweed.lol.client.dtos.SummonerDTO;
 import org.junit.Test;
 
-import java.util.Map;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-import static com.androweed.lol.client.interfaces.Region.EUW;
-
-public class RestLolClientTest {
+public class RegionTest {
 
     @Test
-    public void testGetSummonerByName() throws Exception {
-        Map<String, SummonerDTO> result = new RestLolClient().retrieveSummonersByName(EUW, "aurelman");
+    public void shouldReturnCorrectEuwAttribute() throws Exception {
+        assertThat(Region.EUW.getName()).isEqualTo("euw");
+        assertThat(Region.EUW.getEndpoint()).isEqualTo("https://euw.api.pvp.net");
     }
 }
