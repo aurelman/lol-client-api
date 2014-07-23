@@ -24,12 +24,13 @@ import com.androweed.lol.client.interfaces.LolClient;
 import com.androweed.lol.client.interfaces.Region;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,8 @@ import static com.google.common.base.Objects.firstNonNull;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 /**
+ * {@link com.androweed.lol.client.implementations.RestLolClient} is the default implementation of the LolClient.
+ *
  * @author aurelman
  */
 public class RestLolClient implements LolClient {
@@ -46,10 +49,13 @@ public class RestLolClient implements LolClient {
 
     public static final String API_KEY = "";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestLolClient.class);
+
+    private Client client = ClientBuilder.newClient();
+
     @Override
     public Map<String, SummonerDTO> retrieveSummonersByName(final Region region, final String... summonerNames)
             throws RateLimitExceededException, IOException {
-        Client client = ClientBuilder.newClient();
         Response response = client.target(region.getEndpoint())
                 .path("api")
                 .path("lol")
@@ -63,14 +69,17 @@ public class RestLolClient implements LolClient {
                 .get();
 
         if (response.getStatus() == 429) {
+            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", String.join(",",
+                    summonerNames), region.getName());
             throw new RateLimitExceededException();
         }
         Map<String, SummonerDTO> summoners = null;
         if (response.getStatus() == 200) {
             ObjectMapper mapper = new ObjectMapper();
             MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, SummonerDTO.class);
-            summoners = mapper.readValue(response.readEntity(InputStream.class), mapType);
+            summoners = mapper.readValue(response.readEntity(String.class), mapType);
         }
+        // Returns an empty map if nothing to return
         return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
     }
 }
