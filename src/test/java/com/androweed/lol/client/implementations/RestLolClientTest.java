@@ -87,6 +87,49 @@ public class RestLolClientTest {
         verify(webTarget).path("aurelman");
     }
 
+    @Test
+    public void shouldReturnsAMultipleSummoners() throws RateLimitExceededException, IOException {
+
+        when(restClient.target(anyString())).thenReturn(webTarget);
+        when(webTarget.path(anyString())).thenReturn(webTarget);
+        when(webTarget.request(any(MediaType.class))).thenReturn(builder);
+        when(webTarget.queryParam(anyString(), anyString())).thenReturn(webTarget);
+        when(builder.get()).thenReturn(response);
+        when(response.getStatus()).thenReturn(200);
+        when(response.readEntity(String.class)).thenReturn(
+                "{\n" +
+                "   \"aurelman2\": {\n" +
+                "      \"id\": 123456789,\n" +
+                "      \"name\": \"aurelman2\",\n" +
+                "      \"profileIconId\": 663,\n" +
+                "      \"revisionDate\": 1406491996000,\n" +
+                "      \"summonerLevel\": 30\n" +
+                "   },\n" +
+                "   \"aurelman\": {\n" +
+                "      \"id\": 56177666,\n" +
+                "      \"name\": \"aurelman\",\n" +
+                "      \"profileIconId\": 28,\n" +
+                "      \"revisionDate\": 1406492389000,\n" +
+                "      \"summonerLevel\": 9\n" +
+                "   }\n" +
+                "}");
+
+
+        // Then
+        Map<String, SummonerDTO> result = client.retrieveSummonersByName(Region.EUW, "aurelman", "aurelman2");
+        assertThat(result).containsKey("aurelman");
+        assertThat(result).containsKey("aurelman2");
+
+        assertThat(result.get("aurelman").getName()).isEqualTo("aurelman");
+        assertThat(result.get("aurelman").getId()).isEqualTo(56177666);
+
+        assertThat(result.get("aurelman2").getName()).isEqualTo("aurelman2");
+        assertThat(result.get("aurelman2").getId()).isEqualTo(123456789);
+
+        verify(webTarget).path(Region.EUW.getName());
+        verify(webTarget).path("aurelman,aurelman2");
+    }
+
     @Test(expected = RateLimitExceededException.class)
     public void shouldThrowAnExceptionWhenRateLimitIsExceeded() throws RateLimitExceededException, IOException {
 
