@@ -63,7 +63,7 @@ public class RestLolClient implements LolClient {
                 .path("v1.4")
                 .path("summoner")
                 .path("by-name")
-                .path("aurelman")
+                .path(String.join(",", summonerNames))
                 .queryParam(PARAM_NAME_API_KEY, API_KEY)
                 .request(APPLICATION_JSON_TYPE)
                 .get();
