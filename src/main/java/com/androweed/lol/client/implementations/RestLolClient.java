@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.base.Objects.firstNonNull;
+import static java.lang.String.join;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 /**
@@ -63,13 +64,13 @@ public class RestLolClient implements LolClient {
                 .path("v1.4")
                 .path("summoner")
                 .path("by-name")
-                .path(String.join(",", summonerNames))
+                .path(join(",", summonerNames))
                 .queryParam(PARAM_NAME_API_KEY, API_KEY)
                 .request(APPLICATION_JSON_TYPE)
                 .get();
 
         if (response.getStatus() == 429) {
-            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", String.join(",",
+            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
                     summonerNames), region.getName());
             throw new RateLimitExceededException();
         }
