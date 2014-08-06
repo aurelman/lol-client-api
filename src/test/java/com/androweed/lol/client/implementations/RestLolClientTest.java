@@ -60,7 +60,8 @@ public class RestLolClientTest {
     private Response response;
 
     @Test
-    public void shouldReturnsAValidObjectWhenSummonerExists() throws RateLimitExceededException, IOException {
+    public void shouldReturnsAValidObjectWhenRetrievingSummonerByName() throws
+            RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
@@ -88,7 +89,7 @@ public class RestLolClientTest {
     }
 
     @Test
-    public void shouldReturnsAMultipleSummoners() throws RateLimitExceededException, IOException {
+    public void shouldReturnsMultipleObjectsWhenRetrievingSummonersByName() throws RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
@@ -131,7 +132,8 @@ public class RestLolClientTest {
     }
 
     @Test(expected = RateLimitExceededException.class)
-    public void shouldThrowAnExceptionWhenRateLimitIsExceeded() throws RateLimitExceededException, IOException {
+    public void shouldThrowAnExceptionWhenRetrievingSummonerByNameAndRateLimitIsExceeded() throws
+            RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
