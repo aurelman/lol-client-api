@@ -42,5 +42,21 @@ public interface LolClient {
      * @throws RateLimitExceededException if the rate limit is exceeded during the call.
      * @throws IOException If any error occurs during retrieving data.
      */
-    Map<String, SummonerDTO> retrieveSummonersByName(final Region region, final String... summonerNames) throws RateLimitExceededException, IOException;
+    Map<String, SummonerDTO> retrieveSummonersByName(final Region region, final String... summonerNames)
+            throws RateLimitExceededException, IOException;
+
+    /**
+     * Retrieve {@link com.androweed.lol.client.dtos.SummonerDTO summoners} given their respective id
+     * in the specified the region.
+     *
+     * @param region The region that should be requested to find the summoner.
+     * @param summonerIds The summoner's ids
+     * @return a {@link java.util.Map} object containing the retrieved
+     * {@link com.androweed.lol.client.dtos.SummonerDTO summoners} identified by their name.
+     *
+     * @throws RateLimitExceededException if the rate limit is exceeded during the call.
+     * @throws IOException If any error occurs during retrieving data.
+     */
+    Map<String, SummonerDTO> retrieveSummonersById(final Region region, final String ... summonerIds)
+            throws RateLimitExceededException, IOException;
 }
