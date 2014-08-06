@@ -83,4 +83,33 @@ public class RestLolClient implements LolClient {
         // Returns an empty map if nothing to return
         return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
     }
+
+    @Override
+    public Map<String, SummonerDTO> retrieveSummonersById(final Region region, final String... summonerIds) throws
+            RateLimitExceededException, IOException {
+        Response response = client.target(region.getEndpoint())
+                .path("api")
+                .path("lol")
+                .path(region.getName())
+                .path("v1.4")
+                .path("summoner")
+                .path(join(",", summonerIds))
+                .queryParam(PARAM_NAME_API_KEY, API_KEY)
+                .request(APPLICATION_JSON_TYPE)
+                .get();
+
+        if (response.getStatus() == 429) {
+            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
+                    summonerIds), region.getName());
+            throw new RateLimitExceededException();
+        }
+        Map<String, SummonerDTO> summoners = null;
+        if (response.getStatus() == 200) {
+            ObjectMapper mapper = new ObjectMapper();
+            MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, SummonerDTO.class);
+            summoners = mapper.readValue(response.readEntity(String.class), mapType);
+        }
+        // Returns an empty map if nothing to return
+        return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
+    }
 }
