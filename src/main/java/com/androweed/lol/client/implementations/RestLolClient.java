@@ -69,19 +69,8 @@ public class RestLolClient implements LolClient {
                 .request(APPLICATION_JSON_TYPE)
                 .get();
 
-        if (response.getStatus() == 429) {
-            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
-                    summonerNames), region.getName());
-            throw new RateLimitExceededException();
-        }
-        Map<String, SummonerDTO> summoners = null;
-        if (response.getStatus() == 200) {
-            ObjectMapper mapper = new ObjectMapper();
-            MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, SummonerDTO.class);
-            summoners = mapper.readValue(response.readEntity(String.class), mapType);
-        }
-        // Returns an empty map if nothing to return
-        return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
+        checkResponseStatus(response, region, summonerNames);
+        return parseSummonersIn(response);
     }
 
     @Override
@@ -98,11 +87,20 @@ public class RestLolClient implements LolClient {
                 .request(APPLICATION_JSON_TYPE)
                 .get();
 
-        if (response.getStatus() == 429) {
-            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
-                    summonerIds), region.getName());
-            throw new RateLimitExceededException();
-        }
+        checkResponseStatus(response, region, summonerIds);
+        return parseSummonersIn(response);
+    }
+
+    /**
+     * Parse the response from a summoner API and returns the corresponding map of SummonerDTO
+     *
+     * @param response The response from a summoner API
+     * @return A {@link java.util.Map} of <{@link String}, {@link com.androweed.lol.client.dtos.SummonerDTO}> where
+     * the key can be the id or the summoner name whether the api "by id" or "by summoner name" is called.
+     *
+     * @throws IOException
+     */
+    private static Map<String, SummonerDTO> parseSummonersIn(final Response response) throws IOException {
         Map<String, SummonerDTO> summoners = null;
         if (response.getStatus() == 200) {
             ObjectMapper mapper = new ObjectMapper();
@@ -111,5 +109,14 @@ public class RestLolClient implements LolClient {
         }
         // Returns an empty map if nothing to return
         return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
+    }
+
+    private static void checkResponseStatus(Response response, Region parameterRegion,
+                                      String[] parametersSummonerNamesOrIds) throws RateLimitExceededException {
+        if (response.getStatus() == 429) {
+            LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
+                    parametersSummonerNamesOrIds), parameterRegion.getName());
+            throw new RateLimitExceededException();
+        }
     }
 }

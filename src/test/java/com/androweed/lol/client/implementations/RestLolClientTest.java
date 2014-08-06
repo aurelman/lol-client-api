@@ -99,7 +99,7 @@ public class RestLolClientTest {
         when(builder.get()).thenReturn(response);
         when(response.getStatus()).thenReturn(200);
         when(response.readEntity(String.class)).thenReturn(
-                "{\"aurelman\": {\n" +
+                "{\"42\": {\n" +
                 "   \"id\": 42,\n" +
                 "   \"name\": \"aurelman\",\n" +
                 "   \"profileIconId\": 28,\n" +
@@ -110,9 +110,9 @@ public class RestLolClientTest {
 
         // Then
         Map<String, SummonerDTO> result = client.retrieveSummonersById(Region.EUW, "42");
-        assertThat(result).containsKey("aurelman");
-        assertThat(result.get("aurelman").getName()).isEqualTo("aurelman");
-        assertThat(result.get("aurelman").getId()).isEqualTo(42);
+        assertThat(result).containsKey("42");
+        assertThat(result.get("42").getName()).isEqualTo("aurelman");
+        assertThat(result.get("42").getId()).isEqualTo(42);
         verify(webTarget).path(Region.EUW.getName());
         verify(webTarget).path("42");
     }
@@ -173,14 +173,14 @@ public class RestLolClientTest {
         when(response.getStatus()).thenReturn(200);
         when(response.readEntity(String.class)).thenReturn(
                 "{\n" +
-                "   \"aurelman2\": {\n" +
+                "   \"123456789\": {\n" +
                 "      \"id\": 123456789,\n" +
                 "      \"name\": \"aurelman2\",\n" +
                 "      \"profileIconId\": 663,\n" +
                 "      \"revisionDate\": 1406491996000,\n" +
                 "      \"summonerLevel\": 30\n" +
                 "   },\n" +
-                "   \"aurelman\": {\n" +
+                "   \"56177666\": {\n" +
                 "      \"id\": 56177666,\n" +
                 "      \"name\": \"aurelman\",\n" +
                 "      \"profileIconId\": 28,\n" +
@@ -192,14 +192,14 @@ public class RestLolClientTest {
 
         // Then
         Map<String, SummonerDTO> result = client.retrieveSummonersById(Region.EUW, "123456789", "56177666");
-        assertThat(result).containsKey("aurelman");
-        assertThat(result).containsKey("aurelman2");
+        assertThat(result).containsKey("56177666");
+        assertThat(result).containsKey("123456789");
 
-        assertThat(result.get("aurelman").getName()).isEqualTo("aurelman");
-        assertThat(result.get("aurelman").getId()).isEqualTo(56177666);
+        assertThat(result.get("56177666").getName()).isEqualTo("aurelman");
+        assertThat(result.get("56177666").getId()).isEqualTo(56177666);
 
-        assertThat(result.get("aurelman2").getName()).isEqualTo("aurelman2");
-        assertThat(result.get("aurelman2").getId()).isEqualTo(123456789);
+        assertThat(result.get("123456789").getName()).isEqualTo("aurelman2");
+        assertThat(result.get("123456789").getId()).isEqualTo(123456789);
 
         verify(webTarget).path(Region.EUW.getName());
         verify(webTarget).path("123456789,56177666");
