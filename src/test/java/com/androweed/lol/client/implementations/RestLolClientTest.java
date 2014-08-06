@@ -100,12 +100,12 @@ public class RestLolClientTest {
         when(response.getStatus()).thenReturn(200);
         when(response.readEntity(String.class)).thenReturn(
                 "{\"aurelman\": {\n" +
-                        "   \"id\": 42,\n" +
-                        "   \"name\": \"aurelman\",\n" +
-                        "   \"profileIconId\": 28,\n" +
-                        "   \"revisionDate\": 1406147667000,\n" +
-                        "   \"summonerLevel\": 8\n" +
-                        "}}");
+                "   \"id\": 42,\n" +
+                "   \"name\": \"aurelman\",\n" +
+                "   \"profileIconId\": 28,\n" +
+                "   \"revisionDate\": 1406147667000,\n" +
+                "   \"summonerLevel\": 8\n" +
+                "}}");
 
 
         // Then
@@ -118,7 +118,8 @@ public class RestLolClientTest {
     }
 
     @Test
-    public void shouldReturnsMultipleObjectsWhenRetrievingSummonersByName() throws RateLimitExceededException, IOException {
+    public void shouldReturnsMultipleObjectsWhenRetrievingSummonersByName()
+            throws RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
@@ -172,21 +173,21 @@ public class RestLolClientTest {
         when(response.getStatus()).thenReturn(200);
         when(response.readEntity(String.class)).thenReturn(
                 "{\n" +
-                        "   \"aurelman2\": {\n" +
-                        "      \"id\": 123456789,\n" +
-                        "      \"name\": \"aurelman2\",\n" +
-                        "      \"profileIconId\": 663,\n" +
-                        "      \"revisionDate\": 1406491996000,\n" +
-                        "      \"summonerLevel\": 30\n" +
-                        "   },\n" +
-                        "   \"aurelman\": {\n" +
-                        "      \"id\": 56177666,\n" +
-                        "      \"name\": \"aurelman\",\n" +
-                        "      \"profileIconId\": 28,\n" +
-                        "      \"revisionDate\": 1406492389000,\n" +
-                        "      \"summonerLevel\": 9\n" +
-                        "   }\n" +
-                        "}");
+                "   \"aurelman2\": {\n" +
+                "      \"id\": 123456789,\n" +
+                "      \"name\": \"aurelman2\",\n" +
+                "      \"profileIconId\": 663,\n" +
+                "      \"revisionDate\": 1406491996000,\n" +
+                "      \"summonerLevel\": 30\n" +
+                "   },\n" +
+                "   \"aurelman\": {\n" +
+                "      \"id\": 56177666,\n" +
+                "      \"name\": \"aurelman\",\n" +
+                "      \"profileIconId\": 28,\n" +
+                "      \"revisionDate\": 1406492389000,\n" +
+                "      \"summonerLevel\": 9\n" +
+                "   }\n" +
+                "}");
 
 
         // Then
@@ -205,8 +206,8 @@ public class RestLolClientTest {
     }
 
     @Test(expected = RateLimitExceededException.class)
-    public void shouldThrowAnExceptionWhenRetrievingSummonerByNameAndRateLimitIsExceeded() throws
-            RateLimitExceededException, IOException {
+    public void shouldThrowAnExceptionWhenRetrievingSummonerByNameAndRateLimitIsExceeded()
+            throws RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
@@ -220,8 +221,8 @@ public class RestLolClientTest {
     }
 
     @Test(expected = RateLimitExceededException.class)
-    public void shouldThrowAnExceptionWhenRetrievingSummonerByIdAndRateLimitIsExceeded() throws
-            RateLimitExceededException, IOException {
+    public void shouldThrowAnExceptionWhenRetrievingSummonerByIdAndRateLimitIsExceeded()
+            throws RateLimitExceededException, IOException {
 
         when(restClient.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);
