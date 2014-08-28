@@ -84,7 +84,8 @@ public class RestLolClientTest {
         assertThat(result).containsKey("aurelman");
         assertThat(result.get("aurelman").getName()).isEqualTo("aurelman");
         assertThat(result.get("aurelman").getId()).isEqualTo(42);
-        verify(webTarget).path(Region.EUW.getName());
+        verify(restClient).target("https://" + Region.EUW.host());
+        verify(webTarget).path(Region.EUW.urlPath());
         verify(webTarget).path("aurelman");
     }
 
@@ -113,7 +114,8 @@ public class RestLolClientTest {
         assertThat(result).containsKey("42");
         assertThat(result.get("42").getName()).isEqualTo("aurelman");
         assertThat(result.get("42").getId()).isEqualTo(42);
-        verify(webTarget).path(Region.EUW.getName());
+        verify(restClient).target("https://" + Region.EUW.host());
+        verify(webTarget).path(Region.EUW.urlPath());
         verify(webTarget).path("42");
     }
 
@@ -157,7 +159,8 @@ public class RestLolClientTest {
         assertThat(result.get("aurelman2").getName()).isEqualTo("aurelman2");
         assertThat(result.get("aurelman2").getId()).isEqualTo(123456789);
 
-        verify(webTarget).path(Region.EUW.getName());
+        verify(restClient).target("https://" + Region.EUW.host());
+        verify(webTarget).path(Region.EUW.urlPath());
         verify(webTarget).path("aurelman,aurelman2");
     }
 
@@ -201,7 +204,8 @@ public class RestLolClientTest {
         assertThat(result.get("123456789").getName()).isEqualTo("aurelman2");
         assertThat(result.get("123456789").getId()).isEqualTo(123456789);
 
-        verify(webTarget).path(Region.EUW.getName());
+        verify(restClient).target("https://" + Region.EUW.host());
+        verify(webTarget).path(Region.EUW.urlPath());
         verify(webTarget).path("123456789,56177666");
     }
 

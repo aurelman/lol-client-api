@@ -25,25 +25,25 @@ package com.androweed.lol.client.interfaces;
  * @author aurelman
  */
 public enum Region {
-
-    EUW("euw", "https://euw.api.pvp.net");
-
-    private final String name;
-
-    private final String endpoint;
-
-    private Region(final String name, final String endpoint) {
-        this.name = name;
-        this.endpoint = endpoint;
-    }
+    BR,
+    EUNE,
+    EUW,
+    KR,
+    LAS,
+    LAN,
+    NA,
+    OCE,
+    TR,
+    RU,
+    GLOBAL;
 
     /**
      * The identifier of the region.
      *
      * @return The identifier of the region.
      */
-    public String getName() {
-        return name;
+    public String urlPath() {
+        return name().toLowerCase();
     }
 
     /**
@@ -51,7 +51,7 @@ public enum Region {
      *
      * @return The target corresponding to the region
      */
-    public String getEndpoint() {
-        return endpoint;
+    public String host() {
+        return name().toLowerCase() + ".api.pvp.net";
     }
 }
