@@ -55,12 +55,12 @@ public class RestLolClient implements LolClient {
     private Client client = ClientBuilder.newClient();
 
     @Override
-    public Map<String, SummonerDTO> retrieveSummonersByName(final Region region, final String... summonerNames)
+    public Map<String, SummonerDTO> retrieveSummonersByName(final Region region, final String ... summonerNames)
             throws RateLimitExceededException, IOException {
-        Response response = client.target(region.getEndpoint())
+        Response response = client.target("https://" + region.host())
                 .path("api")
                 .path("lol")
-                .path(region.getName())
+                .path(region.urlPath())
                 .path("v1.4")
                 .path("summoner")
                 .path("by-name")
@@ -74,12 +74,12 @@ public class RestLolClient implements LolClient {
     }
 
     @Override
-    public Map<String, SummonerDTO> retrieveSummonersById(final Region region, final String... summonerIds) throws
-            RateLimitExceededException, IOException {
-        Response response = client.target(region.getEndpoint())
+    public Map<String, SummonerDTO> retrieveSummonersById(final Region region, final String ... summonerIds)
+            throws RateLimitExceededException, IOException {
+        Response response = client.target("https://" + region.host())
                 .path("api")
                 .path("lol")
-                .path(region.getName())
+                .path(region.urlPath())
                 .path("v1.4")
                 .path("summoner")
                 .path(join(",", summonerIds))
@@ -111,11 +111,19 @@ public class RestLolClient implements LolClient {
         return firstNonNull(summoners, Collections.<String, SummonerDTO>emptyMap());
     }
 
-    private static void checkResponseStatus(Response response, Region parameterRegion,
-                                      String[] parametersSummonerNamesOrIds) throws RateLimitExceededException {
+    /**
+     * Check the response status
+     * @param response
+     * @param region
+     * @param summonerNamesOrIds
+     * @throws RateLimitExceededException
+     */
+    private static void checkResponseStatus(final Response response, final Region region,
+                                            final String[] summonerNamesOrIds)
+            throws RateLimitExceededException {
         if (response.getStatus() == 429) {
             LOGGER.warn("rate limit exceeded while retrieving summoners [{}] for region [{}]", join(",",
-                    parametersSummonerNamesOrIds), parameterRegion.getName());
+                    summonerNamesOrIds), region.urlPath());
             throw new RateLimitExceededException();
         }
     }
